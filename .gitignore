@@ -36,3 +36,4 @@ Thumbs.db
 # Vector DBs / Data
 # (Uncomment the line below if you persist ChromaDB to disk)
 # chroma_db/
+.env
