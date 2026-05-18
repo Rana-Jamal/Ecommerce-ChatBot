@@ -42,13 +42,22 @@ E_commerce_chatbot/
 
 The following sections explain the core functionalities of the chatbot as depicted in the project screenshots.
 
-**1. Application Interface (`E_commerce_chatbot_ss1.png`)**
+**1. Application Interface**
+
+![Application Interface](E_commerce_chatbot_ss1.png)
+
 This screenshot displays the main welcome page of the chatbot. The interface is clean and straightforward, featuring a chat window where the user can input their queries. The system initializes the session state and prepares to route incoming messages, offering an immediate and accessible entry point for customer interaction.
 
-**2. FAQ Retrieval (RAG Pipeline) (`E_commerce_chatbot_ss2.png`)**
+**2. FAQ Retrieval (RAG Pipeline)**
+
+![FAQ Retrieval](E_commerce_chatbot_ss2.png)
+
 This screenshot illustrates the chatbot handling a customer support query. The semantic router successfully identifies the intent as an FAQ, triggering the RAG pipeline. The system queries the ChromaDB vector database for similar past questions, retrieves the corresponding context, and uses the LLM to formulate a precise, context-bound answer regarding company policies or general inquiries.
 
-**3. Product Search (Text-to-SQL Pipeline) (`E_commerce_chatbot_ss3.png`)**
+**3. Product Search (Text-to-SQL Pipeline)**
+
+![Product Search](E_commerce_chatbot_ss3.png)
+
 This screenshot showcases the chatbot's ability to retrieve specific product information based on natural language criteria. The semantic router directs the query to the SQL module, which dynamically generates an SQL `SELECT` statement to query the SQLite database. The retrieved product data (including price, ratings, and discounts) is then processed by the LLM into a readable, formatted list for the user, bridging the gap between natural language and structured data querying.
 
 ## Setup and Installation
