@@ -1,21 +1,12 @@
-from groq import  Groq
-import os
-from dotenv import load_dotenv
 import sqlite3
 import pandas as pd
 from pathlib import Path
 import re
+from ollama_config import chat_completion
 
-load_dotenv()
 
-# Load the Groq model name from environment variables
-GROQ_MODEL = os.getenv("GROQ_MODEL")
+db_path = Path(__file__).parent / "db.sqlite"
 
-# Define the path to the local SQLite database
-db_path = Path(__file__).parent/"db.sqlite"
-
-# Initialize the Groq client for SQL-related LLM calls
-client_sql = Groq()
 
 sql_prompt = """You are an expert in understanding the database schema and generating SQL queries for a natural language question asked
 pertaining to the data you have. The schema is provided in the schema tags. 
@@ -32,71 +23,101 @@ avg_rating - float (average rating of the product. Range 0-5, 5 is the highest.)
 total_ratings - integer (total number of ratings for the product)
 
 </schema>
-Make sure whenever you try to search for the brand name, the name can be in any case. 
-So, make sure to use %LIKE% to find the brand in condition. Never use "ILIKE". 
-Create a single SQL query for the question provided. 
-The query should have all the fields in SELECT clause (i.e. SELECT *)
 
-Just the SQL query is needed, nothing more. Always provide the SQL in between the <SQL></SQL> tags."""
+Rules:
+- Generate only one SQLite SELECT query.
+- The query must use SELECT *.
+- Never generate INSERT, UPDATE, DELETE, DROP, ALTER, CREATE, or PRAGMA.
+- For brand/title search, use LOWER(column_name) LIKE LOWER('%value%').
+- Never use ILIKE because SQLite does not support it.
+- Always provide SQL between <SQL></SQL> tags.
+- Do not write explanation outside the SQL tags.
 
-comprehension_prompt = """You are an expert in understanding the context of the question and replying based on the data pertaining to the question provided. You will be provided with Question: and Data:. The data will be in the form of an array or a dataframe or dict. Reply based on only the data provided as Data for answering the question asked as Question. Do not write anything like 'Based on the data' or any other technical words. Just a plain simple natural language response.
-The Data would always be in context to the question asked. For example is the question is “What is the average rating?” and data is “4.3”, then answer should be “The average rating for the product is 4.3”. So make sure the response is curated with the question and data. Make sure to note the column names to have some context, if needed, for your response.
-There can also be cases where you are given an entire dataframe in the Data: field. Always remember that the data field contains the answer of the question asked. All you need to do is to always reply in the following format when asked about a product: 
-Produt title, price in indian rupees, discount, and rating, and then product link. Take care that all the products are listed in list format, one line after the other. Not as a paragraph.
-For example:
-1. Campus Women Running Shoes: Rs. 1104 (35 percent off), Rating: 4.4 <link>
-2. Campus Women Running Shoes: Rs. 1104 (35 percent off), Rating: 4.4 <link>
-3. Campus Women Running Shoes: Rs. 1104 (35 percent off), Rating: 4.4 <link>
+Example:
+<SQL>SELECT * FROM product WHERE LOWER(brand) LIKE LOWER('%nike%') LIMIT 5;</SQL>"""
 
-"""
 
+comprehension_prompt = """You are an expert in understanding the context of the question and replying based on the data pertaining to the question provided.
+
+You will be provided with Question: and Data:.
+
+Reply based only on the provided Data.
+Do not say "Based on the data".
+Do not make up products.
+If Data is empty, say "No matching products found."
+
+When asked about products, always reply in this format:
+
+1. Product title: Rs. price (discount percent off), Rating: avg_rating, Link: product_link
+2. Product title: Rs. price (discount percent off), Rating: avg_rating, Link: product_link
+
+Use list format, one product per line."""
 
 
 def generate_sql_query(question):
     """
-    Takes a natural language question and uses the LLM to generate a corresponding SQL query.
+    Takes a natural language question and uses Ollama Cloud
+    to generate a corresponding SQLite query.
     """
-    # Call the Groq API using the predefined SQL prompt
-    chat_completion = client_sql.chat.completions.create(
+    sql_response = chat_completion(
         messages=[
             {
                 "role": "system",
                 "content": sql_prompt,
             },
-            {"role": "user",
-             "content": question,}
-
+            {
+                "role": "user",
+                "content": question,
+            }
         ],
-        model = os.environ['GROQ_MODEL'],
         temperature=0.2,
-        max_tokens=1024
+        num_predict=1024
     )
 
-    return chat_completion.choices[0].message.content
+    return sql_response
+
 
 def run_query(query):
     """
-    Executes a given SQL SELECT query against the local SQLite database
-    and returns the result as a pandas DataFrame.
+    Executes a SELECT query against SQLite and returns a DataFrame.
     """
-    # Basic security check to ensure it's only a SELECT query
-    if query.strip().upper().startswith('SELECT'):
-        # Connect to the database and read the results into a DataFrame
-        with sqlite3.connect(db_path) as conn:
-            df = pd.read_sql_query(query,conn)
-            return df
+    clean_query = query.strip().rstrip(";")
+
+    blocked_words = [
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "DROP",
+        "ALTER",
+        "CREATE",
+        "PRAGMA",
+        "TRUNCATE",
+        "REPLACE"
+    ]
+
+    upper_query = clean_query.upper()
+
+    if not upper_query.startswith("SELECT"):
+        return None
+
+    if any(word in upper_query for word in blocked_words):
+        return None
+
+    with sqlite3.connect(db_path) as conn:
+        df = pd.read_sql_query(clean_query, conn)
+        return df
 
 
+def data_comprehension(question, context):
+    """
+    Uses Ollama Cloud to generate a natural language response.
+    """
+    context = str(context)
 
-def data_comprehension(question,context):
     if len(context) > 6000:
         context = context[:6000]
-    """
-    Takes the original question and the retrieved database context (data) 
-    and uses the LLM to generate a natural language response summarizing the findings.
-    """
-    # Generate a response based on the data retrieved from the database
-    chat_completion = client_sql.chat.completions.create(
+
+    answer = chat_completion(
         messages=[
             {
                 "role": "system",
@@ -104,51 +125,67 @@ def data_comprehension(question,context):
             },
             {
                 "role": "user",
-                "content": f" Question: {question}. DATA: { context}"
+                "content": f"Question: {question}\nDATA: {context}"
             }
         ],
-        model = os.environ["GROQ_MODEL"],
-        temperature=0.2,
-
+        temperature=0.2
     )
-    return chat_completion.choices[0].message.content
+
+    return answer
+
+
+def extract_sql(sql_query):
+    """
+    Extracts SQL from <SQL></SQL> tags.
+    """
+    pattern = r"<SQL>(.*?)</SQL>"
+    matches = re.findall(pattern, sql_query, re.DOTALL | re.IGNORECASE)
+
+    if not matches:
+        return None
+
+    return matches[0].strip()
+
 
 def sql_chain(question):
     """
-    The main orchestrator function that handles text-to-SQL logic.
-    It translates a question to SQL, runs the query, and formats the result as natural language.
+    Main text-to-SQL chain.
     """
-    # Generate the SQL query from the user's question
     sql_query = generate_sql_query(question)
-    
-    # Use regular expressions to extract just the SQL code from within the <SQL> tags
-    pattern = "<SQL>(.*?)</SQL>"
-    matches = re.findall(pattern, sql_query, re.DOTALL)
+    query = extract_sql(sql_query)
 
-    if len(matches) ==0 :
-        return "Sorry, LLM is not able to generate a query on the question"
-    print(matches[0].strip())
+    if not query:
+        return "Sorry, LLM is not able to generate a query for this question."
 
-    # Execute the generated SQL query
-    response = run_query(matches[0].strip())
+    print("Generated SQL:", query)
+
+    try:
+        response = run_query(query)
+    except Exception as e:
+        print("SQL execution error:", str(e))
+        return "Sorry, there was a problem executing the SQL query."
+
     if response is None:
-        return "Sorry, there was a problem executing SQL query"
+        return "Sorry, only safe SELECT queries are allowed."
 
-    # Convert the resulting pandas DataFrame into a list of dictionaries to serve as context
-    context = response.to_dict(orient='records')
+    if response.empty:
+        return "No matching products found."
 
-    # Generate a user-friendly answer using the resulting data context
+    context = response.to_dict(orient="records")
+
     answer = data_comprehension(question, context)
     return answer
 
 
+if __name__ == "__main__":
+    test_queries = [
+        "Show top 3 shoes with best rating",
+        "Show me 5 cheapest shoes",
+        "Find Nike shoes",
+        "Show products under 2000 rupees",
+        "Show products with discount greater than 30 percent",
+    ]
 
-if __name__=="__main__":
-    # question = "All shoes with rating higher than 4.5 and total number of reviews greater than 500"
-    # sql_query = generate_sql_query(question)
-    # print(sql_query)
-    question = "Show top 3 shoes with best rating"
-    # question = "Show me 3 running shoes for woman"
-    # question = "sfsdfsddsfsf"
-    answer = sql_chain(question)
-    print(answer)
+    for q in test_queries:
+        print("\nQUERY:", q)
+        print(sql_chain(q))

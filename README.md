@@ -13,7 +13,7 @@ This project implements an intelligent, context-aware e-commerce chatbot designe
 ## Technology Stack
 *   **Language:** Python
 *   **User Interface:** Streamlit
-*   **Large Language Model (LLM) API:** Groq
+*   **Large Language Model (LLM) API:** Ollama-cloud
 *   **Vector Database:** ChromaDB
 *   **Embeddings:** HuggingFace (`sentence-transformers/all-MiniLM-L6-v2`)
 *   **Relational Database:** SQLite
@@ -79,10 +79,10 @@ pip install -r requirements.txt
 ```bash
 cp .env.example .env
 ```
-    Then open `.env` and add your Groq API key and preferred model:
+    Then open `.env` and add your Ollama API key and preferred model:
 ```env
-GROQ_API_KEY=your_groq_api_key_here
-GROQ_MODEL=llama3-70b-8192
+OLLAMA_API_KEY=your_ollama_api_key_here
+OLLAMA_MODEL=gpt-oss:120b-cloud
 ```
 
 4.  **Run the application:**

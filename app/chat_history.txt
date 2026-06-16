@@ -1,0 +1,99 @@
+[2026-06-12 00:32:57] user: hello
+[2026-06-12 00:36:06] user: hello
+[2026-06-12 00:40:17] user: hello
+[2026-06-12 00:55:19] user: hello
+[2026-06-12 00:55:21] assistant: Hello there! How are you today? I'm here to help if you have any questions about our products or need some assistance. 😊
+[2026-06-12 00:55:40] user: if query:
+    # Display the user's query in the chat
+    with st.chat_message("user"):
+        st.markdown(query)
+
+    # Reformulate the query using last 10 messages from chat_history.txt
+    contextualized_q = contextualize_query(query, st.session_state.messages)
+
+    print(f"Original Query: {query}")
+    print(f"Contextualized Query: {contextualized_q}")
+
+    # Add user query to Streamlit session history
+    st.session_state.messages.append({"role": "user", "content": query})
+
+    # Get response
+    response = ask(contextualized_q)
+
+    # Display assistant response
+    with st.chat_message("assistant"):
+        st.markdown(response)
+
+    # Add assistant response to Streamlit session history
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+    # Save assistant response to text file
+    save_message_to_file("assistant", response)
+[2026-06-12 00:55:40] assistant: Sorry, route not implemented yet.
+[2026-06-12 00:55:52] user: Hello, who are you?
+[2026-06-12 00:55:54] assistant: I'm Maya, your friendly e-commerce assistant here to help with any shopping questions or product needs you might have! How can I assist you today?
+[2026-06-12 00:56:02] user: what is your name 
+[2026-06-12 00:56:03] assistant: Hello! You can call me Maya. How are you today? I'm here to help with any shopping questions or product needs you might have.
+[2026-06-12 00:56:29] user: thanku
+[2026-06-12 00:56:30] assistant: Hi there! Just checking in. I'm here to help if you have any questions about products or need some recommendations. How can I assist you today?
+[2026-06-12 00:56:48] user: what is your return policy
+[2026-06-12 00:56:50] assistant: You can return products within 30 days of delivery. Refunds are processed within 5-7 business days after the return is received.
+[2026-06-12 00:57:01] user: How can I track my order?
+[2026-06-12 00:57:02] assistant: You can track your order using the tracking link sent to your email.
+[2026-06-12 00:57:16] user: Do you accept cash payment?
+[2026-06-12 00:57:17] assistant: I don't know the answer.
+[2026-06-12 00:58:13] user: what payments are we used
+[2026-06-12 00:58:14] assistant: We accept credit/debit cards, net banking, UPI, and cash on delivery.
+[2026-06-12 00:58:40] user: how do i contact customer support 
+[2026-06-12 00:58:41] assistant: I don't know the answer.
+[2026-06-12 00:58:56] user: Show top 3 shoes with best rating
+[2026-06-12 00:58:58] assistant: No matching products found.
+[2026-06-12 00:59:11] user: Show me 5 cheapest shoes
+[2026-06-12 00:59:12] assistant: No matching products found.
+[2026-06-12 00:59:21] user: Find Nike shoes
+[2026-06-12 00:59:53] assistant: 1. Product title: Rs. 2469 (33% off), Rating: 3.6, Link: https://www.flipkart.com/nike-w-revolution-6-nn-running-shoes-women/p/itm93faa2151359d?pid=SHOGKV32YPGYHE22&lid=LSTSHOGKV32YPGYHE22C7QTWS&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_9&otracker=search&otracker1=search&fm=organic&iid=8d967184-cff0-4bd4-a2cf-7f9ae0b1114c.SHOGKV32YPGYHE22.SEARCH&ppt=hp&ppn=homepage
+2. Product title: Rs. 5349 (37% off), Rating: 4.8, Link: https://www.flipkart.com/nike-running-shoes-women/p/itm9ae5c8b6582a6?pid=SHOGGDWXC6CYFVB8&lid=LSTSHOGGDWXC6CYFVB8V7EFCL&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_39&otracker=search&otracker1=search&fm=organic&iid=8d967184-cff0-4bd4-a2cf-7f9ae0b1114c.SHOGGDWXC6CYFVB8.SEARCH&ppt=sp&ppn=sp
+3. Product title: Rs. 3595 (10% off), Rating: 4.2, Link: https://www.flipkart.com/nike-downshifter-12-running-shoes-women/p/itm9f310b0239268?pid=SHOGRRR3HS6FDCFH&lid=LSTSHOGRRR3HS6FDCFHFARZKZ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_2_63&otracker=search&otracker1=search&fm=organic&iid=f0fe654d-1b9a-45d7-af21-85b24c553a72.SHOGRRR3HS6FDCFH.SEARCH&ppt=sp&ppn=sp
+4. Product title: Rs. 2786 (24% off), Rating: 4.2, Link: https://www.flipkart.com/nike-revolution-5-running-shoes-women/p/itm18ab63bb5a8d4?pid=SHOGSFAZXRYGYSGH&lid=LSTSHOGSFAZXRYGYSGHLWVAPA&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_3_84&otracker=search&otracker1=search&fm=organic&iid=f25d9c0e-2a6e-4e91-8d32-b658bd9ec523.SHOGSFAZXRYGYSGH.SEARCH&ppt=sp&ppn=sp
+5. Product title: Rs. 2882 (22% off), Rating: 4.3, Link: https://www.flipkart.com/nike-revolution-6-running-shoes-women/p/itm4e7643c402394?pid=SHOGTMWQGAGN4YFH&lid=LSTSHOGTMWQGAGN4YFHIXX2QH&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_3_88&otracker=search&otracker1=search&fm=organic&iid=en_gKv4bMhOwm9mwhuH62quZuT2uwjXcVunUFfEZ5wc1NV2tmPZuLgOrXzpqTH3BBBZ8i-Neu6af27nbpfgJ1EKbPUFjCTyOHoHZs-Z5_PS_w0%3D&ppt=sp&ppn=sp
+[2026-06-12 01:00:25] user: show me 5 cheapest shoes under 3000
+[2026-06-12 01:00:26] assistant: No matching products found.
+[2026-06-12 01:00:51] user: Show products under 2000 rupees
+[2026-06-12 01:01:09] assistant: 1. Product title: Rs. 539 (73% off), Rating: 4.0, Link: https://www.flipkart.com/aadi-mesh-lightweight-comfort-summer-trendy-walking-outdoor-daily-use-walking-shoes-women/p/itmf9c3bd58375fb?pid=SHOGKA9QAZGZGH73&lid=LSTSHOGKA9QAZGZGH73TBD9ZC&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_1&otracker=search&otracker1=search&fm=organic&iid=en_iUg1qLf8H6T9WQ0R4bsdUR11LPV661ak9RRhQ2rvUjoFp1jWOaaQgWsJ6iWMWPLIkegk5RSNqeaO4odddQbluA%3D%3D&ppt=hp&ppn=homepage&ssid=ddrziueb4w0000001716204985524&qH=32e27b1148959538
+2. Product title: Rs. 449 (55% off), Rating: 4.0, Link: https://www.flipkart.com/shozie-stylish-sneakers-girls-walking-shoes-women/p/itm0ceae6646b935?pid=SHOGGWVUTYQCRMKY&lid=LSTSHOGGWVUTYQCRMKYNUCLP6&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_3&otracker=search&otracker1=search&fm=organic&iid=8d967184-cff0-4bd4-a2cf-7f9ae0b1114c.SHOGGWVUTYQCRMKY.SEARCH&ppt=hp&ppn=homepage&ssid=ddrziueb4w0000001716204985524&qH=32e27b1148959538
+[2026-06-12 01:01:32] user: Show products under 5000 
+[2026-06-12 01:01:47] assistant: 1. Product title: Rs. 539 (73% off), Rating: 4.0, Link: https://www.flipkart.com/aadi-mesh-lightweight-comfort-summer-trendy-walking-outdoor-daily-use-walking-shoes-women/p/itmf9c3bd58375fb?pid=SHOGKA9QAZGZGH73&lid=LSTSHOGKA9QAZGZGH73TBD9ZC&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20
+2. Product title: Rs. 449 (55% off), Rating: 4.0, Link: https://www.flipkart.com/shozie-stylish-sneakers-girls-walking-shoes-women/p/itm0ceae6646b935?pid=SHOGGWVUTYQCRMKY&lid=LSTSHOGGWVUTYQCRMKYNUCLP6&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20
+3. Product title: Rs. 675 (15% off), Rating: 4.2, Link: https://www.flipkart.com/asian-cute-sports-shoes-women-running-girls-stylish-latest-design-new-fashion-casual-sneakers-ladies-lace-up-lightweight-pink-jogging-walking-gym-party/p/itmfgnquqjghwjzc?pid=SHOEEF3QZSZZY6HK&lid=LSTSHOEEF3QZSZZY6HKUOD4Q2&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20
+[2026-06-12 01:02:07] user: only nikes
+[2026-06-12 01:02:46] assistant: 1. Product title: Rs. 2469 (33% off), Rating: 3.6, Link: https://www.flipkart.com/nike-w-revolution-6-nn-running-shoes-women/p/itm93faa2151359d?pid=SHOGKV32YPGYHE22&lid=LSTSHOGKV32YPGYHE22C7QTWS&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_9&otracker=search&otracker1=search&fm=organic&iid=8d967184-cff0-4bd4-a2cf-7f9ae0b1114c.SHOGKV32YPGYHE22.SEARCH&ppt=hp&ppn=homepage&ssid=ddrziueb4w0000001716204985524&qH=32e27b1148959538
+2. Product title: Rs. 5349 (37% off), Rating: 4.8, Link: https://www.flipkart.com/nike-running-shoes-women/p/itm9ae5c8b6582a6?pid=SHOGGDWXC6CYFVB8&lid=LSTSHOGGDWXC6CYFVB8V7EFCL&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_39&otracker=search&otracker1=search&fm=organic&iid=8d967184-cff0-4bd4-a2cf-7f9ae0b1114c.SHOGGDWXC6CYFVB8.SEARCH&ppt=sp&ppn=sp&ssid=ddrziueb4w0000001716204985524&qH=32e27b1148959538
+3. Product title: Rs. 3595 (10% off), Rating: 4.2, Link: https://www.flipkart.com/nike-downshifter-12-running-shoes-women/p/itm9f310b0239268?pid=SHOGRRR3HS6FDCFH&lid=LSTSHOGRRR3HS6FDCFHFARZKZ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_2_63&otracker=search&otracker1=search&fm=organic&iid=f0fe654d-1b9a-45d7-af21-85b24c553a72.SHOGRRR3HS6FDCFH.SEARCH&ppt=sp&ppn=sp&ssid=70i52bsw680000001716204987291&qH=32e27b1148959538
+4. Product title: Rs. 2786 (24% off), Rating: 4.2, Link: https://www.flipkart.com/nike-revolution-5-running-shoes-women/p/itm18ab63bb5a8d4?pid=SHOGSFAZXRYGYSGH&lid=LSTSHOGSFAZXRYGYSGHLWVAPA&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_3_84&otracker=search&otracker1=search&fm=organic&iid=f25d9c0e-2a6e-4e91-8d32-b658bd9ec523.SHOGSFAZXRYGYSGH.SEARCH&ppt=sp&ppn=sp&ssid=nbh47r1gdc0000001716204989849&qH=32e27b1148959538
+5. Product title: Rs. 2882 (22% off), Rating: 4.3, Link: https://www.flipkart.com/nike-revolution-6-running-shoes-women/p/itm4e7643c402394?pid=SHOGTMWQGAGN4YFH&lid=LSTSHOGTMWQGAGN4YFHIXX2QH&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_3_88&otracker=search&otracker1=search&fm=organic&iid=en_gKv4bMhOwm9mwhuH62quZuT2uwjXcVunUFfEZ5wc1NV2tmPZuLgOrXzpqTH3BBBZ8i-Neu6af27nbpfgJ1EKbPUFjCTyOHoHZs-Z5_PS_w0%3D&ppt=sp&ppn=sp&ssid=nbh47r1gdc0000001716204989849&qH=32e27b1148959538
+[2026-06-12 01:03:01] user: Show me Nike shoes
+[2026-06-12 01:04:03] assistant: 1. Product title: Rs. 2469 (33% off), Rating: 3.6, Link: https://www.flipkart.com/nike-w-revolution-6-nn-running-shoes-women/p/itm93faa2151359d?pid=SHOGKV32YPGYHE22&lid=LSTSHOGKV32YPGYHE22C7QTWS&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_9&otracker=search&otracker1=search&fm=organic&iid=8d967184-cff0-4bd4-a2cf-7f9ae0b1114c.SHOGKV32YPGYHE22.SEARCH&ppt=hp&ppn=homepage
+2. Product title: Rs. 5349 (37% off), Rating: 4.8, Link: https://www.flipkart.com/nike-running-shoes-women/p/itm9ae5c8b6582a6?pid=SHOGGDWXC6CYFVB8&lid=LSTSHOGGDWXC6CYFVB8V7EFCL&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_1_39&otracker=search&otracker1=search&fm=organic&iid=8d967184-cff0-4bd4-a2cf-7f9ae0b1114c.SHOGGDWXC6CYFVB8.SEARCH&ppt=sp&ppn=sp
+3. Product title: Rs. 3595 (10% off), Rating: 4.2, Link: https://www.flipkart.com/nike-downshifter-12-running-shoes-women/p/itm9f310b0239268?pid=SHOGRRR3HS6FDCFH&lid=LSTSHOGRRR3HS6FDCFHFARZKZ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_2_63&otracker=search&otracker1=search&fm=organic&iid=f0fe654d-1b9a-45d7-af21-85b24c553a72.SHOGRRR3HS6FDCFH.SEARCH&ppt=sp&ppn=sp
+4. Product title: Rs. 2786 (24% off), Rating: 4.2, Link: https://www.flipkart.com/nike-revolution-5-running-shoes-women/p/itm18ab63bb5a8d4?pid=SHOGSFAZXRYGYSGH&lid=LSTSHOGSFAZXRYGYSGHLWVAPA&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_3_84&otracker=search&otracker1=search&fm=organic&iid=f25d9c0e-2a6e-4e91-8d32-b658bd9ec523.SHOGSFAZXRYGYSGH.SEARCH&ppt=sp&ppn=sp
+5. Product title: Rs. 2882 (22% off), Rating: 4.3, Link: https://www.flipkart.com/nike-revolution-6-running-shoes-women/p/itm4e7643c402394?pid=SHOGTMWQGAGN4YFH&lid=LSTSHOGTMWQGAGN4YFHIXX2QH&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_3_88&otracker=search&otracker1=search&fm=organic&iid=en_gKv4bMhOwm9mwhuH62quZuT2uwjXcVunUFfEZ5wc1NV2tmPZuLgOrXzpqTH3BBBZ8i-Neu6af27nbpfgJ1EKbPUFjCTyOHoHZs-Z5_PS_w0%3D&ppt=sp&ppn=sp
+6. Product title: Rs. 5217 (40% off), Rating: 4.7, Link: https://www.flipkart.com/nike-escape-run-2-running-shoes-women/p/itm78f90b4063832?pid=SHOGZT5UFYY23G64&lid=LSTSHOGZT5UFYY23G64NWUB3C&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_4_159&otracker=search&otracker1=search&fm=organic&iid=aeecf10f-f2bd-495d-9701-8214d04d5e9b.SHOGZT5UFYY23G64.SEARCH&ppt=sp&ppn=sp
+7. Product title: Rs. 7137 (40% off), Rating: 4.8, Link: https://www.flipkart.com/nike-pegasus-40-running-shoes-women/p/itm76c7a6d74efb8?pid=SHOGRRR4C9BB8FHY&lid=LSTSHOGRRR4C9BB8FHYWV2UXX&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_5_165&otracker=search&otracker1=search&fm=organic&iid=f5a62ffb-9561-4934-96fa-1dd6234d071d.SHOGRRR4C9BB8FHY.SEARCH&ppt=sp&ppn=sp
+8. Product title: Rs. 3597 (40% off), Rating: 4.3, Link: https://www.flipkart.com/nike-quest-4-running-shoes-women/p/itm057cb70a60145?pid=SHOGSFAZZCHBE4W6&lid=LSTSHOGSFAZZCHBE4W6FGOYMQ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_5_197&otracker=search&otracker1=search&fm=organic&iid=en_PWcuz312cT3KR6kEiBQ2tOLO3kkWrWBLolcoPYc9izpKPrT1-3bdgoVe3DtSaz7RJMVE1eoSwlSti9q78veqQWaRs4JL222ZRV-dN99QnxU%3D&ppt=sp&ppn=sp
+9. Product title: Rs. 4495 (10% off), Rating: 4.5, Link: https://www.flipkart.com/nike-experience-run-11-training-gym-shoes-women/p/itm02b671d3a48be?pid=SHOGRYYRFRYEZYP8&lid=LSTSHOGRYYRFRYEZYP8IKPHSM&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_7_252&otracker=search&otracker1=search&fm=organic&iid=7d11e0d4-1445-4cdb-af26-ec039aeb1513.SHOGRYYRFRYEZYP8.SEARCH&ppt=sp&ppn=sp
+10. Product title: Rs. 4249 (14% off), Rating: 4.2, Link: https://www.flipkart.com/nike-w-zoom-bella-6-training-gym-shoes-women/p/itm74d23f3caaff7?pid=SHOGKV32HZ2NPWVW&lid=LSTSHOGKV32HZ2NPWVWN0U2EB&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_8_304&otracker=search&otracker1=search&fm=organic&iid=730183df-99c8-46c4-b25d-c1103ae190a1.SHOGKV32HZ2NPWVW.SEARCH&ppt=sp&ppn=sp
+[2026-06-12 01:04:13] user: Only under 2000 
+[2026-06-12 01:04:15] assistant: No matching products found.
+[2026-06-12 01:04:43] user: Show top 5 Adidas shoes
+[2026-06-12 01:05:24] assistant: 1. Product title: TERREX TRACEROCKER 2 W Running Shoes For Women, Rs. 5129 (43% off), Rating: 5.0, Link: https://www.flipkart.com/adidas-terrex-tracerocker-2-w-running-shoes-women/p/itm790f82e77fb03?pid=SHOGZT556JHTKVWY&lid=LSTSHOGZT556JHTKVWYZKT4BZ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_20_790&otracker=search&otracker1=search&fm=organic&iid=e59b186d-fbac-4865-8ff5-e0f09740654b.SHOGZT556JHTKVWY.SEARCH&ppt=sp&ppn=sp&ssid=30wydcls340000001716205028801&qH=32e27b1148959538
+2. Product title: RUNFALCON 3.0 W Running Shoes For Women, Rs. 3759 (43% off), Rating: 4.8, Link: https://www.flipkart.com/adidas-runfalcon-3-0-w-running-shoes-women/p/itmef286699e0ecb?pid=SHOGW3MHTGEETHDY&lid=LSTSHOGW3MHTGEETHDYFWKVA1&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_2_78&otracker=search&otracker1=search&fm=organic&iid=en_bnN4SboNYkyEBDg6PkEJLi8CnXB_xUVU06T0Z0pE-EDz9pGRTSmsRLms52XfqF3eSpQ2_0mtt01G2CT6Tpz-KInfEY2D5bWfIUmTlXs_oiU%3D&ppt=sp&ppn=sp&ssid=70i52bsw680000001716204987291&qH=32e27b1148959538
+3. Product title: Runfalcon 3.0 W Running Shoes For Women, Rs. 3759 (43% off), Rating: 4.8, Link: https://www.flipkart.com/adidas-runfalcon-3-0-w-running-shoes-women/p/itmef286699e0ecb?pid=SHOGW3MHUXTKRJZK&lid=LSTSHOGW3MHUXTKRJZKRLIPG1&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_8_302&otracker=search&otracker1=search&fm=organic&iid=730183df-99c8-46c4-b25d-c1103ae190a1.SHOGW3MHUXTKRJZK.SEARCH&ppt=sp&ppn=sp&ssid=333aowqemo0000001716205001287&qH=32e27b1148959538
+4. Product title: PUREBOOST 22 W Running Shoes For Women, Rs. 4449 (62% off), Rating: 4.8, Link: https://www.flipkart.com/adidas-pureboost-22-w-running-shoes-women/p/itme48491560ff28?pid=SHOGGW2VPVE2AEN7&lid=LSTSHOGGW2VPVE2AEN7EILMGO&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_5_162&otracker=search&otracker1=search&fm=organic&iid=en_PWcuz312cT3KR6kEiBQ2tOLO3kkWrWBLolcoPYc9izrl393QY3GVCK3kvOCGpXTrXfLnuhp5Joay2MTrGvQKMQ%3D%3D&ppt=sp&ppn=sp&ssid=olhq7jaohc0000001716204994492&qH=32e27b1148959538
+5. Product title: RUNFALCON 3.0 W Running Shoes For Women, Rs. 4619 (30% off), Rating: 4.8, Link: https://www.flipkart.com/adidas-runfalcon-3-0-w-running-shoes-women/p/itm46f65e56b7d6f?pid=SHOGW3MHJGFFQRVS&lid=LSTSHOGW3MHJGFFQRVSE3O0FQ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_16_631&otracker=search&otracker1=search&fm=organic&iid=b5701663-86cc-4f19-be5d-5878b6149762.SHOGW3MHJGFFQRVS.SEARCH&ppt=sp&ppn=sp&ssid=3mw7lcb6wg0000001716205019797&qH=32e27b1148959538
+[2026-06-12 01:05:29] user: Now sort by best rating
+[2026-06-12 01:06:06] assistant: 1. Product title: TERREX TRACEROCKER 2 W Running Shoes For Women, Rs. 5129 (43% off), Rating: 5.0, Link: https://www.flipkart.com/adidas-terrex-tracerocker-2-w-running-shoes-women/p/itm790f82e77fb03?pid=SHOGZT556JHTKVWY&lid=LSTSHOGZT556JHTKVWYZKT4BZ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_20_790&otracker=search&otracker1=search&fm=organic&iid=e59b186d-fbac-4865-8ff5-e0f09740654b.SHOGZT556JHTKVWY.SEARCH&ppt=sp&ppn=sp&ssid=30wydcls340000001716205028801&qH=32e27b1148959538
+2. Product title: RUNFALCON 3.0 W Running Shoes For Women, Rs. 3759 (43% off), Rating: 4.8, Link: https://www.flipkart.com/adidas-runfalcon-3-0-w-running-shoes-women/p/itmef286699e0ecb?pid=SHOGW3MHTGEETHDY&lid=LSTSHOGW3MHTGEETHDYFWKVA1&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_2_78&otracker=search&otracker1=search&fm=organic&iid=en_bnN4SboNYkyEBDg6PkEJLi8CnXB_xUVU06T0Z0pE-EDz9pGRTSmsRLms52XfqF3eSpQ2_0mtt01G2CT6Tpz-KInfEY2D5bWfIUmTlXs_oiU%3D&ppt=sp&ppn=sp&ssid=70i52bsw680000001716204987291&qH=32e27b1148959538
+3. Product title: RUNFALCON 3.0 W Running Shoes For Women, Rs. 3759 (43% off), Rating: 4.8, Link: https://www.flipkart.com/adidas-runfalcon-3-0-w-running-shoes-women/p/itmef286699e0ecb?pid=SHOGW3MHUXTKRJZK&lid=LSTSHOGW3MHUXTKRJZKRLIPG1&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_8_302&otracker=search&otracker1=search&fm=organic&iid=730183df-99c8-46c4-b25d-c1103ae190a1.SHOGW3MHUXTKRJZK.SEARCH&ppt=sp&ppn=sp&ssid=333aowqemo0000001716205001287&qH=32e27b1148959538
+4. Product title: RUNFALCON 3.0 W Running Shoes For Women, Rs. 4619 (30% off), Rating: 4.8, Link: https://www.flipkart.com/adidas-runfalcon-3-0-w-running-shoes-women/p/itm46f65e56b7d6f?pid=SHOGW3MHJGFFQRVS&lid=LSTSHOGW3MHJGFFQRVSE3O0FQ&marketplace=FLIPKART&q=sports+shoes+for+women&store=osp%2Fiko%2Fd20&srno=s_16_631&otracker=search&otracker1=search&fm=organic&iid=b5701663-86cc-4f19-be5d-5878b6149762.SHOGW3MHJGFFQRVS.SEARCH&ppt=sp&ppn=sp&ssid=3mw7lcb6wg0000001716205019797&qH=32e27b1148959538
+[2026-06-16 11:23:16] user: hi there 
+[2026-06-16 11:23:17] assistant: Hi! 😊 How’s your day going? I’m Maya, here to help with any product questions or shopping needs you might have. Let me know what you’re looking for!
