@@ -1,6 +1,7 @@
 # Environments
 app/.env
 app/.dockerignore
+app/chat_history.txt
 .venv
 env/
 venv/
