@@ -35,8 +35,6 @@ E_commerce_chatbot/
 │   ├── requirements.txt    # Python dependencies list
 │   └── resources/
 │       └── faq_data.csv    # Source data containing FAQ question-answer pairs
-
-├── .env.example            # Environment variables template
 └── README.md               # Project documentation
 ```
 
