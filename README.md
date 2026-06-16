@@ -31,9 +31,11 @@ E_commerce_chatbot/
 │   ├── sql.py              # Text-to-SQL pipeline for querying the product database
 │   ├── smalltalk.py        # Conversational handler for greetings and general chatter
 │   ├── db.sqlite           # Local SQLite database containing product catalogs
+│   ├── .env                # Environment variables template
+│   ├── requirements.txt    # Python dependencies list
 │   └── resources/
 │       └── faq_data.csv    # Source data containing FAQ question-answer pairs
-├── requirements.txt        # Python dependencies list
+
 ├── .env.example            # Environment variables template
 └── README.md               # Project documentation
 ```

@@ -1,0 +1,14 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+ecb/
+venv/
+.env/
+.git/
+.gitignore
+*.log
+chat_history.txt
+.streamlit/secrets.toml
